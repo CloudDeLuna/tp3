@@ -2,19 +2,28 @@
 #define GAMEWINDOW_H
 
 #include "openglwindow.h"
+#include "gamecamera.h"
+#include <QTimer>
 
+#define HIVER 0
+#define PRINTEMPS 1
+#define ETE 2
+#define AUTOMNE 3
+
+#define RIEN 0
+#define NORMALE 1
+#define PLUIE 2
+#define NEIGE 3
 
 struct point
 {
     float x, y ,z;
 };
 
-
-
 class GameWindow : public OpenGLWindow
 {
 public:
-    GameWindow();
+    GameWindow(int fps, gamecamera* camera, int saison = PRINTEMPS);
 
     void initialize();
     void render();
@@ -29,23 +38,27 @@ public:
     void displayTrianglesTexture();
 
     void displayColor(float);
-
     void loadMap(QString localPath);
+    void setCamera(gamecamera* camera);
+    gamecamera* getCamera();
 
-private:
+    void initAll();
+    void initEntity(int index);
+    void update();
+
+protected:
 
     int m_frame;
     QImage m_image;
     point *p;
 
-
     int carte=1;
-
-    int etat = 0;
-    float rotX = -45.0;
-    float rotY = -45.0;
-    float ss = 1.0f;
-
+    gamecamera* m_camera;
+    bool m_hasToRotate = false;
+    QTimer* m_timer;
+    int m_fps;
+    int m_temps = RIEN;
+    int m_saison = PRINTEMPS;
 };
 
 
